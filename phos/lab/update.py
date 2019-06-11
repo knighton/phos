@@ -6,7 +6,9 @@ from torch import optim
 from torch.utils.data import DataLoader
 
 from ..dataset import load_dataset
+from ..fit import fit
 from ..model import each_model_name, get_model
+from ..spy import RowPerEpoch, SaveDir
 from ..util.flag_parsing import parse_class_and_kwargs
 from .settings import LabSettings
 
@@ -64,9 +66,14 @@ def add_experiment(dataset, loader_cpus, use_cuda, model_name, blocks_per_stage,
     opt_class, opt_kwargs = parse_class_and_kwargs(optim, optimizer)
     optimizer = opt_class(model.parameters(), **opt_kwargs)
 
-    # Add reporters for showing progress and updating the lab.
+    # Add spies for notifying the user of progress and updating the lab.
+    row_per_epoch = RowPerEpoch()
+    save_dir = SaveDir(run_dir, blurb_percentiles)
+    spies = row_per_epoch, save_dir
 
     # Now, train the model.
+    fit(train_loader, val_loader, model, optimizer, num_epochs,
+        train_batches_per_epoch, val_batches_per_epoch, use_cuda, spies)
 
     # Note done.
     with open(done_filename, 'w') as out:

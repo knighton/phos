@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 from .spy import Spy
-from .util.batch_result_buffer import BatchResultBuffer()
+from .util.batch_result_buffer import BatchResultBuffer
 
 
 class SaveDir(Spy):

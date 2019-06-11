@@ -1,11 +1,11 @@
-from .reporter import Reporter
+from .spy import Spy
 from .util.batch_result_buffer import BatchResultBuffer
 
 
 mean = lambda xx: sum(xx) / len(xx)
 
 
-class RowPerEpoch(Reporter):
+class RowPerEpoch(Spy):
     """
     Writes a results row after each epoch, forming a happy little ASCII table.
 

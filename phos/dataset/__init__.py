@@ -7,9 +7,9 @@ _NAME2LOAD = {
 }
 
 
-def load_task(name):
+def load_dataset(name):
     """
-    Load the task by name.
+    Load the dataset by name.
 
     Returns (in shape, out shape), (train dataset, val dataset).
     """

@@ -1,8 +1,13 @@
 from argparse import ArgumentParser
 import json
 import os
+from shutil import rmtree
+from torch import optim
+from torch.utils.data import DataLoader
 
-from ..model import each_model_name
+from ..dataset import load_dataset
+from ..model import each_model_name, get_model
+from ..util.flag_parsing import parse_class_and_kwargs
 from .settings import LabSettings
 
 
@@ -22,7 +27,50 @@ def add_experiment(dataset, loader_cpus, use_cuda, model_name, blocks_per_stage,
     """
     Fit a model from flags, saving to the lab.
     """
-    pass
+    # First, check if already done.  If not done, wipe the preexisting.
+    run_dir = '%s/model/%s/run/%d/' % (lab_dir, model_name, run_id)
+    done_filename = '%s/done.txt' % run_dir
+    if os.path.exists(done_filename):
+        return
+    if os.path.exists(run_dir):
+        rmtree(run_dir)
+
+    # Load the dataset.
+    (in_shape, out_shape), (train_dataset, val_dataset) = load_dataset(dataset)
+    in_channels, in_height, in_width = in_shape
+    out_classes, = out_shape
+
+    # Instantiate data loaders for the dataset.  Both are shuffled.
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True,
+                              num_workers=loader_cpus)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True,
+                            num_workers=loader_cpus)
+
+    # Model parameters are derived from both dataset dimensions and input args.
+    model_class = get_model(model_name)
+    model_kwargs = {
+        'in_channels': in_channels,
+        'in_height': in_height,
+        'in_width': in_width,
+        'out_classes': out_classes,
+        'blocks_per_stage': blocks_per_stage,
+        'block_channels': block_channels,
+    }
+    model = model_class(**model_kwargs)
+    if use_cuda:
+        model.cuda()
+
+    # Create the optimizer according to the parsed optimizer flag.
+    opt_class, opt_kwargs = parse_class_and_kwargs(optim, optimizer)
+    optimizer = opt_class(model.parameters(), **opt_kwargs)
+
+    # Add reporters for showing progress and updating the lab.
+
+    # Now, train the model.
+
+    # Note done.
+    with open(done_filename, 'w') as out:
+        out.write('')
 
 
 def add_model(lab_dir, settings, model_name):

@@ -28,10 +28,10 @@ class ModelChassis(Sequential):
         def new_pool(size):
             return MaxPool2d(size)
 
-        layers = Sequential(
+        layers = [
             Conv2d(in_channels, block_channels, 3, 1, 1),
             BatchNorm2d(block_channels),
-        )
+        ]
 
         for hw in [32, 16, 8, 4, 2, 1]:
             layers.append(new_stage(hw))
@@ -43,7 +43,7 @@ class ModelChassis(Sequential):
             ReLU(),
             Dropout(),
             Linear(block_channels, out_classes),
-        )
+        ]
 
         super().__init__(*layers)
 

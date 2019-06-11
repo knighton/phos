@@ -4,6 +4,7 @@ import os
 from shutil import rmtree
 
 from .settings import LabSettings
+from .update import update_lab
 
 
 def parse_flags():
@@ -41,7 +42,7 @@ def create_lab(settings, lab_dir, force):
     os.makedirs(d)
 
     # Now, grid-fit each model according to the settings.
-    # update_lab(lab_dir)  TODO
+    update_lab(lab_dir)
 
 
 def main(flags):

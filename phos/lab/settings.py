@@ -90,7 +90,7 @@ class LabSettings(object):
             'fixed': self.fixed_k2v,
         }
 
-    def each_run(self):
+    def each_experiment(self):
         """
         Iterate over each possible combination of settings.
         """

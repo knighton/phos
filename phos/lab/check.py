@@ -1,6 +1,8 @@
 from argparse import ArgumentParser
 import json
 
+from .settings import LabSettings
+
 
 def parse_flags():
     a = ArgumentParser()
@@ -10,6 +12,7 @@ def parse_flags():
 
 def main(flags):
     x = json.load(open(flags.settings))
+    LabSettings(x)
 
 
 if __name__ == '__main__':

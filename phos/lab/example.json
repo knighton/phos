@@ -1,0 +1,17 @@
+{
+    "options": {
+        "dataset": "cifar10",
+        "loader_cpus": 4,
+        "use_cuda": true,
+        "blocks_per_stage": 1,
+        "block_channels": [32, 64],
+        "optimizer": "Adam"
+    },
+    "fixed": {
+        "num_epochs": 100,
+        "train_batches_per_epoch": 100,
+        "val_batches_per_epoch": 100,
+        "batch_size": 32,
+        "blurb_percentiles": 25
+    }
+}

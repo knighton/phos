@@ -1,9 +1,10 @@
-from .cifar10 import load_cifar10
+from .cifar import load_cifar10, load_cifar100
 
 
 # Name -> Dataset load function.
 _NAME2LOAD = {
     'cifar10': load_cifar10,
+    'cifar100': load_cifar100,
 }
 
 

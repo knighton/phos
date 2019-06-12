@@ -1,5 +1,5 @@
 {
-    "dataset": "cifar10",
+    "dataset": "cifar100",
     "loader_cpus": 4,
     "use_cuda": true,
     "blocks_per_stage": 3,

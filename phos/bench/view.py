@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from itertools import product
 import numpy as np
 import os
 
@@ -30,42 +31,35 @@ def get(k2v, k, vv):
         return [x]
 
 
+def each_combo(models, resolutions, splits, attributes):
+    for model, resolution, split, attribute in product(
+            models, resolutions, splits, attributes):
+        if split == 'val' and attribute == 'backward':
+            continue
+        yield model, resolution, split, attribute
+
+
 def each_query_result(bench_dir, x):
     done_models = list(each_done_model(bench_dir))
     models = get(x, 'model', done_models)
     models = sorted(filter(lambda s: s in done_models, models))
+
     resolutions = get(x, 'resolution', RESOLUTIONS)
     splits = get(x, 'split', SPLITS)
     attributes = get(x, 'attribute', ATTRIBUTES)
 
-    for model in models:
-        for resolution in resolutions:
-            for split in splits:
-                for attribute in attributes:
-                    if split == 'val' and attribute == 'backward':
-                        continue
+    for model, resolution, split, attribute in each_combo(
+            models, resolutions, splits, attributes):
+        k = {
+            'model': model,
+            'resolution': resolution,
+            'split': split,
+            'attribute': attribute,
+        }
 
-                    k = {
-                        'model': model,
-                        'resolution': resolution,
-                        'split': split,
-                        'attribute': attribute,
-                    }
+        f = '%s/model/%s/result/%d/%s_%s.npy' % \
+            (bench_dir, model, resolution, split, attribute)
+        x = np.fromfile(f, np.float32)
+        v = x.tolist()
 
-                    f = '%s/model/%s/result/%d/%s_%s.npy' % \
-                        (bench_dir, model, resolution, split, attribute)
-                    x = np.fromfile(f, np.float32)
-                    v = x.tolist()
-                    yield k, v
-
-
-"""
-d = 'data/bench/example/'
-x = {
-    'resolution': 100,
-    'split': ['train', 'val'],
-    'attribute': None,
-}
-for k, v in each_query_result(d, x):
-    print(k, v)
-"""
+        yield k, v

@@ -1,0 +1,13 @@
+{
+    "dataset": "str",
+    "loader_cpus": "int",
+    "use_cuda": "bool",
+    "blocks_per_stage": "int",
+    "block_channels": "int",
+    "optimizer": "str",
+    "num_epochs": "int",
+    "train_batches_per_epoch": "int",
+    "val_batches_per_epoch": "int",
+    "batch_size": "int",
+    "blurb_percentiles": "int"
+}

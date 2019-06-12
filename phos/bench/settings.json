@@ -1,0 +1,13 @@
+{
+    "dataset": "cifar10",
+    "loader_cpus": 4,
+    "use_cuda": true,
+    "blocks_per_stage": 3,
+    "block_channels": 128,
+    "optimizer": "Adam",
+    "num_epochs": 100,
+    "train_batches_per_epoch": 100,
+    "val_batches_per_epoch": 100,
+    "batch_size": 32,
+    "blurb_percentiles": 25
+}

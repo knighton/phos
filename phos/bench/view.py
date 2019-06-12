@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from itertools import product
+import itertools
+import json
 import numpy as np
 import os
 
@@ -31,8 +32,8 @@ def get(k2v, k, vv):
         return [x]
 
 
-def each_combo(models, resolutions, splits, attributes):
-    for model, resolution, split, attribute in product(
+def product(models, resolutions, splits, attributes):
+    for model, resolution, split, attribute in itertools.product(
             models, resolutions, splits, attributes):
         if split == 'val' and attribute == 'backward':
             continue
@@ -48,8 +49,8 @@ def each_query_result(bench_dir, x):
     splits = get(x, 'split', SPLITS)
     attributes = get(x, 'attribute', ATTRIBUTES)
 
-    for model, resolution, split, attribute in each_combo(
-            models, resolutions, splits, attributes):
+    for model, resolution, split, attribute in product(models, resolutions, splits,
+                                                       attributes):
         k = {
             'model': model,
             'resolution': resolution,
@@ -63,3 +64,8 @@ def each_query_result(bench_dir, x):
         v = x.tolist()
 
         yield k, v
+
+
+def get_blurb(bench_dir, model, epoch):
+    f = '%s/model/%s/blurb/%d.json' % (bench_dir, model, epoch)
+    return json.load(open(f))

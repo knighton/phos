@@ -12,8 +12,9 @@ def parse_flags():
     a = ArgumentParser()
     a.add_argument('--host', type=str, default='0.0.0.0')
     a.add_argument('--port', type=int, default=1337)
-    a.add_argument('--dir', type=str, default='data/bench/example/')
-    a.add_argument('--www', type=str, default='phos/bench/www/')
+    a.add_argument('--bench_dir', type=str, default='data/bench/example/')
+    a.add_argument('--inc_dir', type=str, default='phos/bench/www/inc')
+    a.add_argument('--template_dir', type=str, default='phos/bench/www/template')
     return a.parse_args()
 
 
@@ -24,13 +25,13 @@ app = Flask(__name__)
 
 @app.route('/api/get_settings', methods=['POST'])
 def serve_api_get_settings():
-    x = get_settings()
+    x = get_settings(flags.bench_dir)
     return jsonify(x)
 
 
 @app.route('/api/get_done_models', methods=['POST'])
 def serve_api_get_done_models():
-    x = get_done_models(flags.dir)
+    x = get_done_models(flags.bench_dir)
     return jsonify(x)
 
 
@@ -42,14 +43,15 @@ def serve_api_get_static_query_options():
 
 @app.route('/api/query_results', methods=['POST'])
 def serve_api_query_results():
-    x = query_results(flags.dir, request.json)
+    x = request.json or {}
+    x = query_results(flags.bench_dir, x)
     return jsonify(x)
 
 
-@app.route('/static/<basename>')
-def serve_static(basename):
+@app.route('/inc/<basename>')
+def serve_inc(basename):
     assert '..' not in basename
-    f = '%s/%s' % (flags.www, basename)
+    f = '%s/%s' % (flags.inc_dir, basename)
     text = open(f).read()
     mimetype = guess_type(basename)[0]
     return Response(text, mimetype=mimetype)
@@ -57,7 +59,7 @@ def serve_static(basename):
 
 @app.route('/')
 def serve():
-    f = '%s/index.html' % flags.www
+    f = '%s/index.html' % flags.template_dir
     return open(f).read()
 
 

@@ -43,8 +43,7 @@ def serve_api_get_static_query_options():
 
 @app.route('/api/query_results', methods=['POST'])
 def serve_api_query_results():
-    x = request.json or {}
-    x = query_results(flags.bench_dir, x)
+    x = query_results(flags.bench_dir, request.get_json(force=True))
     return jsonify(x)
 
 

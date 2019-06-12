@@ -1,102 +1,102 @@
 from itertools import product
-  
+
 
 class LabSettings(object):
     """
-    Collection of model training options.
-
-    This class:
-        (a) strictly validates the user-producted JSON config, and
-        (b) allows iterating over all the combinations of hyperparameters for grid
-            search.
+    Collection of model training options.  Some are grid searched, some are solo.
     """
 
-    # List of (key, value type).
-    option_specs = (
-        ('dataset', str),
-        ('loader_cpus', int),
-        ('use_cuda', bool),
-        ('blocks_per_stage', int),
-        ('block_channels', int),
-        ('optimizer', str),
-    )
-
-    # List of (key, value type).
-    fixed_specs = (
-        ('num_epochs', int),
-        ('train_batches_per_epoch', int),
-        ('val_batches_per_epoch', int),
-        ('batch_size', int),
-        ('blurb_percentiles', int),
-    )
-
     @classmethod
-    def normalize_option_values(cls, x, klass):
+    def normalize_values(cls, x):
         """
-        Normalize one or more option value to a list of items of the given type.
+        Normalize a grid parameter value list.
+
+        Usually just one option, making it cleaner to define sans list, but they are
+        all lists for the product().
         """
-        if isinstance(x, klass):
-            x = [x]
+        if isinstance(x, list):
+            return sorted(x)
         else:
-            assert isinstance(x, list)
-            for item in x:
-                assert isinstance(item, klass)
-            assert len(set(x)) == len(x)
-        return x
-
-    @classmethod
-    def normalize_options(cls, x, option_specs):
-        """
-        Normalize and check all the option lists.
-        """
-        keys = set(map(lambda pair: pair[0], option_specs))
-        for key in x:
-            assert key in keys
-        k2vv = {}
-        vvv = []
-        for key, klass in option_specs:
-            values = cls.normalize_option_values(x[key], klass)
-            k2vv[key] = values
-            vvv.append(values)
-        return k2vv, vvv
-
-    @classmethod
-    def validate_fixed(cls, x, fixed_specs):
-        """
-        Check all the fixed settings.
-        """
-        keys = set(map(lambda pair: pair[0], fixed_specs))
-        for key in x:
-            assert key in keys
-        for key, klass in fixed_specs:
-            value = x[key]
-            assert isinstance(value, klass)
-        return x
+            return [x]
 
     def __init__(self, x):
         """
-        Initialize given JSON dict settings.
+        Validates and indexes a lab settings JSON object.
         """
-        self.options_k2vv, self.options_vvv = \
-            self.normalize_options(x['options'], self.option_specs)
-        self.fixed_k2v = self.validate_fixed(x['fixed'], self.fixed_specs)
+        # Verify section names.
+        assert tuple(sorted(x)) == ('fixed', 'grid')
 
-    def dump(self):
-        """
-        Dump to JSON dict.
-        """
-        return {
-            'options': self.options_k2vv,
-            'fixed': self.fixed_k2v,
-        }
+        # Mapping of grid key -> values.
+        #
+        # For looking up the possible values of a field.
+        self.grid = {}
+        pairs = []
+        for key, values in x['grid'].items():
+            values = self.normalize_values(values)
+            self.grid[key] = values
+            pairs.append((key, values))
+        pairs.sort()
 
-    def each_experiment(self):
+        # Pair of lists: keys and lists of possible values.
+        #
+        # For iterating the grid fields in a fixed order.
+        self.grid_keys = []
+        self.grid_value_lists = []
+        for key, values in pairs:
+            self.grid_keys.append(key)
+            self.grid_value_lists.append(values)
+
+        # A list of dicts, each mapping key -> selected value.
+        #
+        # There is a dict for every possible combination of param values.  We fit a
+        # model on each one.  Run IDs <-> these param dicts.  We typically refer to
+        # runs by their run IDs for simplicity.
+        self.grid_combos = []
+        for selected_grid_values in product(*self.grid_value_lists):
+            combo = dict(zip(self.grid_keys, selected_grid_values))
+            self.grid_combos.append(combo)
+
+        # Number of grid combos.
+        self.num_grid_combos = len(self.grid_combos)
+
+        # Mapping of key -> value.
+        self.fixed = x['fixed']
+
+    def query_runs(self, x):
         """
-        Iterate over each possible combination of settings.
+        Convert query -> run IDs.
+
+        A query is a collection of optional grid value filters.  These filters
+        together either accept or reject each run.
         """
-        for options_vv in product(*self.options_vvv):
-            k2v = {}
-            for (key, _), value in zip(self.option_specs, options_vv):
-                k2v[key] = value
-            k2v.update(self.fixed_k2v)
-            yield k2v
+        # Extract just the list of query filters that correspond to grid hyperparams
+        # (as opposed to filtering by model name, resolution, split, attribute, etc).
+        # Normalize expecteds into grid value lists.
+        filters = []
+        for k, v in x.items():
+            if k not in self.grid:
+                continue
+            if v is None:
+                vv = self.grid[k]
+            elif isinstance(v, list):
+                assert v
+                vv = v
+            else:
+                vv = [v]
+            filters.append((k, vv))
+
+        # Now iterate over each combination of parameter values (runs), checking for
+        # matches..
+        #
+        # Could be done better, but will not be the bottleneck for reasonable sizes
+        # of hyperparameter grid.
+        run_ids = []
+        for run_id, grid_combo in enumerate(self.grid_combos):
+            ok = True
+            for k, vv in filters:
+                if grid_combo[k] not in vv:
+                    ok = False
+                    break
+            run_ids.append(run_id)
+
+        return run_ids

@@ -2,17 +2,17 @@
 
 TODO: scrsht
 
-----
+## Features
 
-#### 1. Growing toolbox of "interesting" neural network layers.
+* Growing toolbox of "interesting" neural network layers.
 
-#### 2. Environment for comparing and debugging their performance.
+* Environment for comparing and debugging their performance.
 
-#### 3. Different nn.Module API to fix edge case, PyTorch wrappers (phos.nn for torch.nn).
+* Different module API to fix edge case in PyTorch nn.Module; wrappers (phos.nn for torch.nn).
 
-----
+## Benchmarks
 
-### New benchmark
+### New
 
 * Evaluate the models on a set of hyperparameters (dataset, model depth/width, optimizer, etc).
 
@@ -20,7 +20,7 @@ TODO: scrsht
   python3 -m phos.bench.new --settings phos/bench/example.json --dir data/benchmark/example/
   ```
 
-### Update benchmark
+### Update
 
 * Add new layers you invent to `phos.nx`, subclassing `phos.nx.module.Module`.
 
@@ -32,7 +32,7 @@ TODO: scrsht
   python3 -m phos.bench.update --dir data/benchmark/example/
   ```
 
-### View benchmark
+### View
 
 * Analyze model performance, pathways, losses, etc.
 
@@ -40,9 +40,7 @@ TODO: scrsht
   python3 -m phos.bench.view --dir data/benchmark/example/ --port 1337
   ```
 
-----
-
-### Phos module
+## Modules
 
 * Skip/choice connections are common (framework was built to see into this).
 

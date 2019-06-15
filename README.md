@@ -14,31 +14,31 @@ TODO: scrsht
 
 ### Creating a benchmark
 
-Evaluate the models on a set of hyperparameters (dataset, model depth/width, optimizer, etc).
+* Evaluate the models on a set of hyperparameters (dataset, model depth/width, optimizer, etc).
 
-```
-python3 -m phos.bench.new --settings phos/bench/example.json --dir data/benchmark/example/
-```
+  ```
+  python3 -m phos.bench.new --settings phos/bench/example.json --dir data/benchmark/example/
+  ```
 
 ### Updating a benchmark
 
-Add new layers you invent to `phos.nx`, subclassing `phos.nx.base.layer.Layer`.
+* Add new layers you invent to `phos.nx`, subclassing `phos.nx.base.layer.Layer`.
 
-Add new models demoing such layers to `phos.model`, calling `register_model` with your block(s) to plug into the standard model frame for comparison ([example](https://github.com/knighton/phos/blob/master/phos/model/baseline.py)).
+* Add new models demoing such layers to `phos.model`, calling `register_model` with your block(s) to plug into the standard model frame for comparison ([example](https://github.com/knighton/phos/blob/master/phos/model/baseline.py)).
 
-Update a pre-existing benchmark, executing any new models found.
+* Update a pre-existing benchmark, executing any new models found.
 
-```
-python3 -m phos.bench.add_models --dir data/benchmark/example/
-```
+  ```
+  python3 -m phos.bench.add_models --dir data/benchmark/example/
+  ```
 
 ### Viewing a benchmark
 
-Analyze model performance, pathways, losses, etc.
+* Analyze model performance, pathways, losses, etc.
 
-```
-python3 -m phos.bench.view --dir data/benchmark/example/ --port 1337
-```
+  ```
+  python3 -m phos.bench.view --dir data/benchmark/example/ --port 1337
+  ```
 
 ----
 

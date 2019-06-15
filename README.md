@@ -2,13 +2,15 @@
 
 TODO: scrsht
 
-### Features 
+----
 
-1. Growing toolbox of "interesting" neural network layers.
+#### 1. Growing toolbox of "interesting" neural network layers.
 
-2. Environment for comparing and debugging their performance.
+#### 2. Environment for comparing and debugging their performance.
 
-3. The torch nn.Module forward API is defective.  Fixed in phos.  Breaks compat.  Old-style modules can be trivially wrapped (phos.nn for torch.nn).  See section below.
+#### 3. Slightly different module API, fixing an arguably defective PyTorch design.  Breaks compat.  Trivially wrapped (phos.nn for torch.nn).
+
+----
 
 ### Creating a benchmark
 
@@ -38,7 +40,9 @@ Analyze model performance, pathways, losses, etc.
 python3 -m phos.bench.view --dir data/benchmark/example/ --port 1337
 ```
 
-### Phos module API discussion
+----
+
+### Phos module API
 
 * Skip/choice connections are common (framework was built to see into this).
 

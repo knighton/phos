@@ -33,16 +33,6 @@ class TorchWrapper(Module):
         }
 
 
-
-#def wrap_torch(klass):
-#    """
-#    Wrap a PyTorch nn.Module subclass.
-#    """
-#    def make(*args, **kwargs):
-#        return TorchWrapper(klass, *args, **kwargs)
-#    return lambda: make
-
-
 class Builder(object):
     def __init__(self, klass):
         self.klass = klass

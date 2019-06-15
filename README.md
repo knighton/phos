@@ -2,8 +2,7 @@
 
 TODO: scrsht
 
-Features
---------
+### Features 
 
 1. Growing toolbox of "interesting" neural network layers.
 
@@ -11,33 +10,35 @@ Features
 
 3. The torch nn.Module forward API is defective.  Fixed in phos.  Breaks compat.  Old-style modules can be trivially wrapped (phos.nn for torch.nn).  See section below.
 
-Workflow
---------
+### Creating a benchmark
 
-1. Create a "lab".  Easy enough to type.
-
-```
-python3 -m phos.lab.new --settings phos/lab/example.json --dir data/lab/example/
-```
-
-2. Invent some architecture.
-
-3. Plug the modules into a model chassis used for comparison.
-
-4. Fit model/s against the lab's hyperparameter grid.  Get coffee.
+Evaluate the models on a set of hyperparameters (dataset, model depth/width, optimizer, etc).
 
 ```
-python3 -m phos.lab.update --dir data/lab/example/
+python3 -m phos.bench.new --settings phos/bench/example.json --dir data/benchmark/example/
 ```
 
-5. Analyze its performance, pathways, losses, etc.
+### Updating a benchmark
+
+Add new layers you invent to `phos.nx`, subclassing `phos.nx.base.layer.Layer`.
+
+Add new models demoing such layers to `phos.model`, calling `register_model` with your block(s) to plug into the standard model frame for comparison (example).
+
+Update a pre-existing benchmark, executing any new models found.
 
 ```
-python3 -m phos.lab.view --dir data/lab/example/ --port 1337
+python3 -m phos.bench.add_models --dir data/benchmark/example/
 ```
 
-Modules
--------
+### Viewing a benchmark
+
+Analyze model performance, pathways, losses, etc.
+
+```
+python3 -m phos.bench.view --dir data/benchmark/example/ --port 1337
+```
+
+### Phos module API discussion
 
 * Skip/choice connections are common (framework was built to see into this).
 
@@ -49,7 +50,6 @@ Modules
 
 * To handle lab introspection, phos modules also have a method blurb() which recursively summarizes automatic shape/dtype/latency statistics as well as custom information like path weight to JSON.  And so on.
 
-Name
 ----
 
 *Elemental phosphorus was first isolated (as white phosphorus) in 1669 and emitted a faint glow when exposed to oxygen – hence the name, taken from Greek mythology, Φωσφόρος meaning "light-bearer".*

@@ -1,9 +1,9 @@
 from .spy import Spy
   
 
-class PhoneTree(Spy):
+class SpyList(Spy):
     """
-    A gaggle of spies, but called as just one.  Recursive.
+    A list of spies, called as one.  Recursive.
 
     This is used to keep the training code tidy.
     """

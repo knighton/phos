@@ -1,6 +1,6 @@
 import numpy as np
 
-from ..spy import PhoneTree
+from ..spy import SpyList
 from .batch import train_on_batch, validate_on_batch
 
 
@@ -90,7 +90,7 @@ def fit(train_loader, val_loader, model, optimizer, num_epochs,
     assert val_batches_per_epoch < len(val_loader)
 
     # Make the 0+ spies callable as one for tidyness.
-    spies = PhoneTree(*spies)
+    spies = SpyList(*spies)
 
     # Note fit begin.
     spies.on_fit_begin()

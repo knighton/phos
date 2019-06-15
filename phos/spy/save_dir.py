@@ -20,8 +20,8 @@ class SaveDir(Spy):
         self.buffer = BatchResultBuffer()
         d = '%s/blurb/' % self.model_dir
         os.makedirs(d)
-        for window in [1, 10, 100]:
-            d = '%s/result/%d/' % (self.model_dir, window)
+        for resolution in [1, 10, 100, 1000]:
+            d = '%s/result/%d/' % (self.model_dir, resolution)
             os.makedirs(d)
 
     def on_epoch_begin(self, epoch, model):
@@ -38,29 +38,35 @@ class SaveDir(Spy):
         self.buffer.val.add(*args)
 
     def each_mode_attribute(self):
-        for mode in ['train', 'val']:
+        for split in ['train', 'val']:
             for attribute in ['loss', 'accuracy', 'forward', 'backward']:
-                if mode == 'val' and attribute == 'backward':
+                if split == 'val' and attribute == 'backward':
                     continue
-                yield mode, attribute
+                yield split, attribute
 
     def on_fit_end(self):
         lists = self.buffer.dump()
-        for mode, attribute in self.each_mode_attribute():
-            # Per batch (eg, 20,000 data points).
-            x = lists[mode][attribute]
+        for split, attribute in self.each_mode_attribute():
+            # Per batch (eg, 50,000 data points).
+            x = lists[split][attribute]
             x = np.array(x, np.float32)
-            f = '%s/result/1/%s_%s.npy' % (self.model_dir, mode, attribute)
+            f = '%s/result/1/%s_%s.npy' % (self.model_dir, split, attribute)
             x.tofile(f)
 
-            # Per deca-batch (eg, 2,000 data points).
+            # Per deca-batch (eg, 5,000 data points).
             x = x.reshape(-1, 10)
             x = x.mean(1)
-            f = '%s/result/10/%s_%s.npy' % (self.model_dir, mode, attribute)
+            f = '%s/result/10/%s_%s.npy' % (self.model_dir, split, attribute)
             x.tofile(f)
 
-            # Per centi-batch (eg, 200 data points).
+            # Per centi-batch (eg, 500 data points).
             x = x.reshape(-1, 10)
             x = x.mean(1)
-            f = '%s/result/100/%s_%s.npy' % (self.model_dir, mode, attribute)
+            f = '%s/result/100/%s_%s.npy' % (self.model_dir, split, attribute)
+            x.tofile(f)
+
+            # Per kilo-batch (eg, 50 data points).
+            x = x.reshape(-1, 10)
+            x = x.mean(1)
+            f = '%s/result/1000/%s_%s.npy' % (self.model_dir, split, attribute)
             x.tofile(f)

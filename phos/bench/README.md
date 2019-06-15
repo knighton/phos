@@ -22,6 +22,8 @@ benchmark_name/
                     "
                 100/
                     "
+                1000/
+                    "
         ...
     settings.json
 ```
@@ -35,9 +37,10 @@ benchmark_name/
     * **result/** stores training results over batches.
 * **Results directory**
     * **Resolution** Batches per saved statistic (takes the mean).
-        * **1** Each batch (usually impractical).
-        * **10** Groups of batches (high resolution).
-        * **100** Mini-epochs (low resolution).
+        * **1** Each batch (raw feed).
+        * **10** Groups of batches (ultra-high resolution).
+        * **100** Mini-epochs (high resolution).
+        * **1000** Smallish epochs (low resolution).
     * **Split** Dataset split.
         * **train** Training split.
         * **val** Validation split.

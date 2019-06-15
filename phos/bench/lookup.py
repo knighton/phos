@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 
-_RESOLUTIONS = 1, 10, 100
+_RESOLUTIONS = 1, 10, 100, 1000
 _SPLITS = 'train', 'val'
 _ATTRIBUTES = 'loss', 'accuracy', 'forward', 'backward'
 

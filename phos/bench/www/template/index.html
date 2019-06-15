@@ -1,5 +1,132 @@
+<!DOCTYPE HTML>
 <html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/inc/nv.d3.min.css"></link>
+  <style type="text/css">
+html, body, #chart, svg {
+    height: 100%;
+}
+
+body {
+    background: radial-gradient(circle at center,
+        #000 0%,
+        #002 50%,
+        #004 65%,
+        #408 75%,
+        #824 85%,
+        #f40 90%,
+        #fb0 95%,
+        white 100%
+    );
+}
+.tick line {
+    opacity: 0;
+}
+.tick line:not(.zero) {
+  opacity: 0;
+}
+.dashed .nv-line {
+   stroke-dasharray: 5, 5;
+}
+  </style>
+</head>
 <body>
-<script type="text/javascript" src="/inc/jquery.js"></script>
+  <script src="/inc/jquery.min.js"></script>
+  <script src="/inc/d3.min.js"></script>
+  <script src="/inc/nv.d3.min.js"></script>
+  <div id="chart"></div>
+  <script type="text/javascript">
+var get_random_color = function() {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+};
+
+var means = function(xx, unit) {
+    var yy = [];
+    var num_units = xx.length / unit;
+    for (var i = 0; i < num_units; ++i) {
+        var y = 0;
+        for (var j = 0; j < unit; ++j) {
+            var index = i * unit + j;
+            y += xx[index];
+        }
+        yy.push(y / unit);
+    }
+    return yy;
+};
+
+var query = {
+    resolution: 100,
+    attribute: 'accuracy',
+};
+
+$.post('/api/query_results', JSON.stringify(query), function(r) {
+    var model2color = {};
+
+    var data = [];
+    for (var i = 0; i < r.length; ++i) {
+        var split = r[i][0]['split'];
+
+        var model = r[i][0]['model'];
+        console.log(model);
+        if (model in model2color) {
+            var color = model2color[model];
+        } else {
+            var color = get_random_color();
+            model2color[model] = color;
+        }
+
+        var values = [];
+        var yy = r[i][1];
+        yy = means(yy, 10);
+        for (var x = 0; x < yy.length; ++x) {
+            var point = {
+                x: x,
+                y: yy[x],
+            };
+            values.push(point);
+        }
+
+        var key = model + ' (' + split + ')';
+
+        var datum = {
+            values: values,
+            key: key,
+            color: color,
+            strokeWidth: 2,
+        };
+
+        if (split === 'train') {
+            datum['classed'] = 'dashed';
+        }
+
+        data.push(datum);
+    }
+
+    var chart;
+    nv.addGraph(function() {
+        chart = nv.models.lineChart()
+            .options({
+                duration: 300,
+                useInteractiveGuideline: true,
+            })
+        ;
+
+        chart.xAxis
+            .axisLabel('Epoch')
+            .tickFormat(d3.format(',.1f'))
+        ;
+
+        chart.yAxis
+            .axisLabel('Accuracy')
+            .tickFormat(d3.format(',.2f'))
+        ;
+
+        d3.select('#chart').append('svg').datum(data).call(chart);
+        nv.utils.windowResize(chart.update);
+        return chart;
+    });
+});
+  </script>
 </body>
 </html>

@@ -4,11 +4,13 @@ TODO: scrsht
 
 ----
 
-#### 1. Growing toolbox of "interesting" neural network layers.
+### Features
 
-#### 2. Environment for comparing and debugging their performance.
+* Growing toolbox of "interesting" neural network layers.
 
-#### 3. Different nn.Module API to fix edge case, PyTorch wrappers (phos.nn for torch.nn).
+* Environment for comparing and debugging their performance.
+
+* Different module API to fix edge case in PyTorch nn.Module; wrappers (phos.nn for torch.nn).
 
 ----
 

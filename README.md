@@ -29,7 +29,7 @@ TODO: scrsht
 * Update a pre-existing benchmark, executing any new models found.
 
   ```
-  python3 -m phos.bench.add_models --dir data/benchmark/example/
+  python3 -m phos.bench.update --dir data/benchmark/example/
   ```
 
 ### View benchmark

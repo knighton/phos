@@ -26,5 +26,21 @@ Filesystem
                     "
                 100/
                     "
-            settings.json
 ```
+
+* `blurb/` stores model blurbs dumped at the begining of each epoch.
+
+* Resolution (batches per statistic)
+  * **1** Each batch (usually impractical).
+  * **10** Groups of batches (high resolution).
+  * **100** Mini-epochs (low resolution).
+
+* Split
+  * **train** Training split.
+  * **val** Validation split.
+
+* Attribute
+  * **loss** Cross-entropy.
+  * **accuracy** Classification accuracy.
+  * **forward** Forward time.
+  * **backward** Backward time.

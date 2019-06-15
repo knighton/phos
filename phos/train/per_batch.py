@@ -11,37 +11,37 @@ def compute_accuracy(y_pred, y_true):
     return (y_pred_classes == y_true).type(torch.float32).mean().item()
 
 
+def classify(model, x, y_true):
+    """
+    Helper method to forward propagate through a classifier.
+    """
+    t = time()
+    y_pred, aux_loss = model(x)
+    loss = F.cross_entropy(y_pred, y_true)
+    if aux_loss is not None:
+        loss = loss + aux_loss
+    forward_time = time() - t
+    return y_pred, loss, forward_time
+
+
 def train_on_batch(model, x, y_true, optimizer):
     """
     Train on a single batch, returning loss/acc/time.
     """
     optimizer.zero_grad()
-
-    t = time()
-    y_pred = model(x)
-    loss = F.cross_entropy(y_pred, y_true)
-    forward = time() - t
-
+    y_pred, loss, forward_time = classify(model, x, y_true)
     t = time()
     loss.backward()
-    backward = time() - t
-
+    backward_time = time() - t
     optimizer.step()
-
     accuracy = compute_accuracy(y_pred, y_true)
-
-    return loss.item(), accuracy, forward, backward
+    return loss.item(), accuracy, forward_time, backward_time
 
 
 def validate_on_batch(model, x, y_true):
     """
     Validate on a single batch, returning loss/acc/time.
     """
-    t = time()
-    y_pred = model(x)
-    loss = F.cross_entropy(y_pred, y_true)
-    forward = time() - t
-
+    y_pred, loss, forward_time = classify(model, x, y_true)
     accuracy = compute_accuracy(y_pred, y_true)
-
-    return loss.item(), accuracy, forward
+    return loss.item(), accuracy, forward_time

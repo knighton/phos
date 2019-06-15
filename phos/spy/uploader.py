@@ -10,14 +10,14 @@ class Uploader(Spy):
     POSTs training results to a server.
     """
 
-    def __init__(self, blurb_upload_path, blurb_percentiles, results_upload_path,
+    def __init__(self, summary_upload_path, summary_percentiles, results_upload_path,
                  results_upload_interval):
         """
         Initialize with upload paths and other configuration.
         """
         # Config.
-        self.blurb_upload_path = blurb_upload_path
-        self.blurb_percentiles = blurb_percentiles
+        self.summary_upload_path = summary_upload_path
+        self.summary_percentiles = summary_percentiles
         self.results_upload_path = results_upload_path
         self.results_upload_interval = results_upload_interval
 
@@ -29,12 +29,12 @@ class Uploader(Spy):
 
     def on_fit_on_epoch_begin(self, trainer):
         """
-        Send a model blurb.
+        Send a model summary.
         """
-        if not self.blurb_upload_path:
+        if not self.summary_upload_path:
             return
-        x = model.blurb(self.blurb_percentiles)
-        requests.post(self.blurb_upload_path, x)
+        x = model.summary(self.summary_percentiles)
+        requests.post(self.summary_upload_path, x)
 
     def flush_results(self):
         """

@@ -99,6 +99,6 @@ def query_stats(bench_dir, x):
     return pairs
 
 
-def get_blurb(bench_dir, model, epoch):
-    f = '%s/model/%s/blurb/%d.json' % (bench_dir, model, epoch)
+def get_summary(bench_dir, model, epoch):
+    f = '%s/model/%s/summary/%d.json' % (bench_dir, model, epoch)
     return json.load(open(f))

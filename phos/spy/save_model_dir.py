@@ -11,7 +11,7 @@ class SaveModelDir(Spy):
     Populates a model directory with artifacts of its run.
 
     /
-        blurb/
+        summary/
             0.json
             1.json
             ...
@@ -29,15 +29,15 @@ class SaveModelDir(Spy):
             epoch_val_loss.npy
     """
 
-    def __init__(self, model_dir, blurb_percentiles):
+    def __init__(self, model_dir, summary_percentiles):
         self.model_dir = model_dir
-        self.blurb_percentiles = blurb_percentiles
+        self.summary_percentiles = summary_percentiles
 
     def on_fit_begin(self, trainer):
         if not os.path.exists(self.model_dir):
             os.makedirs(self.model_dir)
 
-        d = '%s/blurb/' % self.model_dir
+        d = '%s/summary/' % self.model_dir
         if not os.path.exists(d):
             os.makedirs(d)
 
@@ -46,8 +46,8 @@ class SaveModelDir(Spy):
             os.makedirs(d)
 
     def on_fit_on_epoch_begin(self, trainer):
-        x = trainer.model.blurb(self.blurb_percentiles)
-        f = '%s/blurb/%d.json' % (self.model_dir, trainer.epoch)
+        x = trainer.model.summary(self.summary_percentiles)
+        f = '%s/summary/%d.json' % (self.model_dir, trainer.epoch)
         text = json.dumps(x, sort_keys=True)
         with open(f, 'w') as out:
             out.write(text)

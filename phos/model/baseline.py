@@ -2,7 +2,7 @@ from ..nx import *
 from .base import ModelBuilder
 
 
-class ConvBlock(Sequential):
+class ConvBlock(Sequence):
     def __init__(self, channels, height, width):
         super().__init__(
             ReLU(),
@@ -11,7 +11,7 @@ class ConvBlock(Sequential):
         )
 
 
-class DenseBlock(Sequential):
+class DenseBlock(Sequence):
     def __init__(self, channels, height, width):
         dim = channels * height * width
         super().__init__(

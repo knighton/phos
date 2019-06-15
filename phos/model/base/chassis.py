@@ -1,7 +1,7 @@
 from ...nx import *
 
 
-class ModelChassis(Sequential):
+class ModelChassis(Sequence):
     """
     Standardized convolutional classifier frame that custom blocks are plugged into.
     """
@@ -46,6 +46,3 @@ class ModelChassis(Sequential):
         ]
 
         super().__init__(*layers)
-
-    def blurb(self, num_percentiles):
-        return None

@@ -28,7 +28,10 @@ Filesystem
                     "
 ```
 
-`blurb/` stores model blurbs dumped at the begining of each epoch.
+* **Model directory**
+    * **blurb** stores model blurbs dumped at the begining of each epoch.
+    * **done.txt** is touched when the run is finished.
+    * **result** stores training results over batches.
 
 * **Resolution** Batches per saved statistic (takes the mean).
     * **1** Each batch (usually impractical).

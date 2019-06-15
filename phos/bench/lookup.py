@@ -24,6 +24,11 @@ def get_settings(bench_dir):
     return json.load(open(f))
 
 
+def get_models(bench_dir):
+    d = '%s/model/' % bench_dir
+    return sorted(os.listdir(d))
+
+
 def get_done_models(bench_dir):
     d = '%s/model/' % bench_dir
     models = []
@@ -57,7 +62,7 @@ def each_query_result(models, splits, attributes):
 
 
 def query_stats(bench_dir, x):
-    models_done = get_done_models(bench_dir)
+    models_done = get_models(bench_dir)
     models = get_query_param(x, 'model', models_done)
     models = sorted(filter(lambda s: s in models_done, models))
 
@@ -73,7 +78,20 @@ def query_stats(bench_dir, x):
         }
 
         f = '%s/model/%s/stat/epoch_%s_%s.npy' % (bench_dir, model, split, attribute)
-        x = np.fromfile(f, np.float32)
+        if os.path.exists(f):
+            x = np.fromfile(f, np.float32)
+        else:
+            d = '%s/model/%s/stat/epoch/' % (bench_dir, model)
+            ss = os.listdir(d)
+            epochs = sorted(map(int, ss))
+            assert epochs == list(range(len(epochs)))
+            xx = []
+            for i in epochs:
+                f = '%s/model/%s/stat/epoch/%d/%s_%s.npy' % \
+                    (bench_dir, model, i, split, attribute)
+                x = np.fromfile(f, np.float32)
+                xx.append(x.mean())
+            x = np.array(xx, np.float32)
         v = x.tolist()
 
         pairs.append((k, v))

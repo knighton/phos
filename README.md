@@ -24,7 +24,7 @@ python3 -m phos.bench.new --settings phos/bench/example.json --dir data/benchmar
 
 Add new layers you invent to `phos.nx`, subclassing `phos.nx.base.layer.Layer`.
 
-Add new models demoing such layers to `phos.model`, calling `register_model` with your block(s) to plug into the standard model frame for comparison (example).
+Add new models demoing such layers to `phos.model`, calling `register_model` with your block(s) to plug into the standard model frame for comparison ([example](https://github.com/knighton/phos/blob/master/phos/model/baseline.py)).
 
 Update a pre-existing benchmark, executing any new models found.
 

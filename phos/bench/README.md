@@ -1,7 +1,6 @@
 ## bench
 
-Filesystem Layout
------------------
+### Filesystem Layout
 
 ```
 benchmark_name/

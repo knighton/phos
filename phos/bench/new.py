@@ -5,7 +5,7 @@ import json
 import os
 from shutil import rmtree
 
-from .add_models import add_models_to_benchmark
+from .update import update_benchmark
 
 
 def parse_flags():
@@ -49,7 +49,7 @@ def create_benchmark(settings_file, settings_spec_file, bench_dir, force):
     d = '%s/model/' % bench_dir
     os.makedirs(d)
 
-    add_models_to_benchmark(bench_dir)
+    update_benchmark(bench_dir)
 
 
 def main(flags):

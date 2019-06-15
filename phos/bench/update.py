@@ -69,7 +69,7 @@ def add_model_to_benchmark(bench_dir, settings, model_name):
         out.write('')
 
     
-def add_models_to_benchmark(bench_dir):
+def update_benchmark(bench_dir):
     f = '%s/settings.json' % bench_dir
     settings = json.load(open(f))
     for model in each_model_name():
@@ -77,7 +77,7 @@ def add_models_to_benchmark(bench_dir):
 
 
 def main(flags):
-    add_models_to_benchmark(flags.dir)
+    update_benchmark(flags.dir)
 
 
 if __name__ == '__main__':

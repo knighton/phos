@@ -1,6 +1,6 @@
 # phos
 
-TODO: scrsht
+![screenshot](https://github.com/knighton/phos/raw/master/doc/bench_cifar10.jpg)
 
 ## Features
 

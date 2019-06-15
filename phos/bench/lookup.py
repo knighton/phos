@@ -53,8 +53,8 @@ def get_query_param(k2v, k, vv):
 
 
 def each_query_result(models, splits, attributes):
-    for model in models:
-        for split in splits:
+    for split in splits:
+        for model in models:
             for attribute in attributes:
                 if split == 'val' and attribute == 'backward':
                     continue

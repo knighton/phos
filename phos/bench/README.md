@@ -1,13 +1,13 @@
 ## bench
 
-Filesystem
-----------
+Filesystem Layout
+-----------------
 
 ```
-(benchmark dir)/
+benchmark_name/
     settings.json
     model/
-        (model name)/
+        model_name/
             blurb/
                 0.json
                 1.json
@@ -26,6 +26,7 @@ Filesystem
                     "
                 100/
                     "
+        ...
 ```
 
 * **Model directory**

@@ -1,6 +1,6 @@
 ## phos
 
-* **bench** Benchmarking layers by comparing their models.
+* **bench** Benchmarking models.
 * **dataset** Datasets for feeding benchmarks.
 * **model** Collection of model architectures to demo phos.nx layers.
 * **nn** torch.nn wrapped for phos API.

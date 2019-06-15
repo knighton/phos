@@ -11,7 +11,7 @@ def compute_accuracy(y_pred, y_true):
     return (y_pred_classes == y_true).type(torch.float32).mean().item()
 
 
-def classify(model, x, y_true):
+def forward_on_batch(model, x, y_true):
     """
     Helper method to forward propagate through a classifier.
     """
@@ -29,7 +29,7 @@ def train_on_batch(model, x, y_true, optimizer):
     Train on a single batch, returning loss/acc/time.
     """
     optimizer.zero_grad()
-    y_pred, loss, forward_time = classify(model, x, y_true)
+    y_pred, loss, forward_time = forward_on_batch(model, x, y_true)
     t = time()
     loss.backward()
     backward_time = time() - t
@@ -42,6 +42,6 @@ def validate_on_batch(model, x, y_true):
     """
     Validate on a single batch, returning loss/acc/time.
     """
-    y_pred, loss, forward_time = classify(model, x, y_true)
+    y_pred, loss, forward_time = forward_on_batch(model, x, y_true)
     accuracy = compute_accuracy(y_pred, y_true)
     return loss.item(), accuracy, forward_time

@@ -29,6 +29,9 @@ body {
 .dashed .nv-line {
    stroke-dasharray: 5, 5;
 }
+.nvd3 .nv-axis { fill: white; stroke: white; }
+.nvd3 .nv-axis path { fill: white; stroke: white; }
+.nvd3 .nv-legend { fill: white; stroke: white; }
   </style>
 </head>
 <body>
@@ -37,6 +40,14 @@ body {
   <script src="/inc/nv.d3.min.js"></script>
   <div id="chart"></div>
   <script type="text/javascript">
+var capitalized = function(s) {
+    if (!s.length) {
+        return s;
+    }
+
+    return s[0].toUpperCase() + s.slice(1);
+};
+
 var get_random_color = function() {
     return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
 };
@@ -103,6 +114,8 @@ $.post('/api/query_results', JSON.stringify(query), function(r) {
         data.push(datum);
     }
 
+    var y_axis_label = capitalized(query.attribute);
+
     var chart;
     nv.addGraph(function() {
         chart = nv.models.lineChart()
@@ -113,12 +126,12 @@ $.post('/api/query_results', JSON.stringify(query), function(r) {
         ;
 
         chart.xAxis
-            .axisLabel('Epoch')
-            .tickFormat(d3.format(',.1f'))
+            .axisLabel('Batches x 1000')
+            .tickFormat(d3.format(',d'))
         ;
 
         chart.yAxis
-            .axisLabel('Accuracy')
+            .axisLabel(y_axis_label)
             .tickFormat(d3.format(',.2f'))
         ;
 

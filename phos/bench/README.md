@@ -1,7 +1,5 @@
 ## bench
 
-### Benchmark filesystem layout
-
 ```
 benchmark_name/
     model/

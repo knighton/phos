@@ -17,15 +17,18 @@ class DenseBlock(Sequential):
         super().__init__(
             Flatten(),
             ReLU(),
+            Dropout(),
             Linear(dim, dim),
             BatchNorm1d(dim),
             Reshape(channels, height, width),
         )
 
 
-# All conv blocks.
-AllConvBaseline = ModelBuilder(ConvBlock)
+x = [ConvBlock] * 5 + [DenseBlock] * 1
+baseline_5conv_1dense = ModelBuilder(x)
 
-# First half conv, last half dense.
-blocks = [ConvBlock] * 3 + [DenseBlock] * 3
-HalfConvBaseline = ModelBuilder(blocks)
+x = [ConvBlock] * 4 + [DenseBlock] * 2
+baseline_4conv_2dense = ModelBuilder(x)
+
+x = [ConvBlock] * 3 + [DenseBlock] * 3
+baseline_3conv_3dense = ModelBuilder(x)

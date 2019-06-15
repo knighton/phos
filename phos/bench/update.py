@@ -8,9 +8,9 @@ from torch import optim
 from torch.utils.data import DataLoader
 
 from ..dataset import load_dataset
-from ..fit import fit
 from ..model import each_model_name, get_model
 from ..spy import RowPerEpoch, SaveDir
+from ..train import fit
 from ..util.flag_parsing import parse_class_and_kwargs
 
 

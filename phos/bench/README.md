@@ -4,7 +4,6 @@
 
 ```
 benchmark_name/
-    settings.json
     model/
         model_name/
             blurb/
@@ -26,13 +25,17 @@ benchmark_name/
                 100/
                     "
         ...
+    settings.json
 ```
 
+* **Benchmark directory**
+    * **model/** stores each training run by model name.
+    * **settings.json** stores this benchmark's training configuration.
 * **Model directory**
-    * **blurb** stores model blurbs dumped at the begining of each epoch.
+    * **blurb/** stores model blurbs dumped at the begining of each epoch.
     * **done.txt** is touched when the run is finished.
-    * **result** stores training results over batches.
-* **Results**
+    * **result/** stores training results over batches.
+* **Results directory**
     * **Resolution** Batches per saved statistic (takes the mean).
         * **1** Each batch (usually impractical).
         * **10** Groups of batches (high resolution).

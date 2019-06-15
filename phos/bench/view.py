@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 from flask import Flask, jsonify, request, Response
 from mimetypes import guess_type
 
-from .lookup import get_blurb, get_done_models, get_settings, \
+from .lookup import get_summary, get_done_models, get_settings, \
     get_static_query_options, query_stats
 
 

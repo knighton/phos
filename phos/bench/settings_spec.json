@@ -9,5 +9,5 @@
     "train_batches_per_epoch": "int",
     "val_batches_per_epoch": "int",
     "batch_size": "int",
-    "blurb_percentiles": "int"
+    "summary_percentiles": "int"
 }

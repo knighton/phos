@@ -56,7 +56,7 @@ def add_model_to_benchmark(bench_dir, settings, model_name):
     checkpoint_file = '%s/checkpoint.chk' % model_dir
     checkpoint = Checkpoint(checkpoint_file)
     log_row_per_epoch = LogRowPerEpoch()
-    save_model_dir = SaveModelDir(model_dir, x['blurb_percentiles'])
+    save_model_dir = SaveModelDir(model_dir, x['summary_percentiles'])
     spies = checkpoint, log_row_per_epoch, save_model_dir
 
     trainer = Trainer(train_loader, val_loader, model, optimizer, x['num_epochs'],

@@ -9,5 +9,5 @@
     "train_batches_per_epoch": 100,
     "val_batches_per_epoch": 50,
     "batch_size": 32,
-    "blurb_percentiles": 25
+    "summary_percentiles": 25
 }

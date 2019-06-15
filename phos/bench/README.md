@@ -4,7 +4,7 @@
 benchmark_name/
     model/
         model_name/
-            blurb/
+            summary/
                 0.json
                 1.json
                 ...
@@ -32,7 +32,7 @@ benchmark_name/
     * **model/** stores each training run by model name.
     * **settings.json** stores this benchmark's training configuration.
 * **Model directory**
-    * **blurb/** stores model blurbs dumped at the begining of each epoch.
+    * **summary/** stores model summaryies dumped at the beginning of each epoch.
     * **done.txt** is touched when the run is finished.
     * **result/** stores training results over batches.
 * **Results directory**

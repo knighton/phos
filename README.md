@@ -8,7 +8,7 @@ TODO: scrsht
 
 #### 2. Environment for comparing and debugging their performance.
 
-#### 3. Different module API to fix edge case, wrapper (phos.nn for torch.nn).
+#### 3. Different nn.Module API to fix edge case, PyTorch wrappers (phos.nn for torch.nn).
 
 ----
 
@@ -42,7 +42,7 @@ python3 -m phos.bench.view --dir data/benchmark/example/ --port 1337
 
 ----
 
-### Phos module API
+### Phos module
 
 * Skip/choice connections are common (framework was built to see into this).
 

@@ -32,16 +32,16 @@ Filesystem
     * **blurb** stores model blurbs dumped at the begining of each epoch.
     * **done.txt** is touched when the run is finished.
     * **result** stores training results over batches.
-
-* **Resolution** Batches per saved statistic (takes the mean).
-    * **1** Each batch (usually impractical).
-    * **10** Groups of batches (high resolution).
-    * **100** Mini-epochs (low resolution).
-* **Split** Dataset split.
-    * **train** Training split.
-    * **val** Validation split.
-* **Attribute** Collected statistic type.
-    * **loss** Cross-entropy.
-    * **accuracy** Classification accuracy.
-    * **forward** Forward time.
-    * **backward** Backward time.
+* **Results**
+    * **Resolution** Batches per saved statistic (takes the mean).
+        * **1** Each batch (usually impractical).
+        * **10** Groups of batches (high resolution).
+        * **100** Mini-epochs (low resolution).
+    * **Split** Dataset split.
+        * **train** Training split.
+        * **val** Validation split.
+    * **Attribute** Collected statistic type.
+        * **loss** Cross-entropy.
+        * **accuracy** Classification accuracy.
+        * **forward** Forward time.
+        * **backward** Backward time.

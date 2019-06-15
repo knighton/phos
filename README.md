@@ -8,7 +8,7 @@ TODO: scrsht
 
 #### 2. Environment for comparing and debugging their performance.
 
-#### 3. Slightly different module API, fixing an arguably defective PyTorch design.  Breaks compat.  Trivially wrapped (phos.nn for torch.nn).
+#### 3. Slightly different module API; fixes an arguably defective PyTorch design; wrapper (phos.nn for torch.nn).
 
 ----
 

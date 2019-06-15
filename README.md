@@ -12,7 +12,7 @@ TODO: scrsht
 
 ----
 
-### Creating a benchmark
+### New benchmark
 
 * Evaluate the models on a set of hyperparameters (dataset, model depth/width, optimizer, etc).
 
@@ -20,7 +20,7 @@ TODO: scrsht
   python3 -m phos.bench.new --settings phos/bench/example.json --dir data/benchmark/example/
   ```
 
-### Updating a benchmark
+### Update benchmark
 
 * Add new layers you invent to `phos.nx`, subclassing `phos.nx.base.layer.Layer`.
 
@@ -32,7 +32,7 @@ TODO: scrsht
   python3 -m phos.bench.add_models --dir data/benchmark/example/
   ```
 
-### Viewing a benchmark
+### View benchmark
 
 * Analyze model performance, pathways, losses, etc.
 

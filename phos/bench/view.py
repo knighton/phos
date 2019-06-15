@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request, Response
 from mimetypes import guess_type
 
 from .lookup import get_blurb, get_done_models, get_settings, \
-    get_static_query_options, query_results
+    get_static_query_options, query_stats
 
 
 def parse_flags():
@@ -44,7 +44,7 @@ def serve_api_get_static_query_options():
 @app.route('/api/query_results', methods=['POST'])
 def serve_api_query_results():
     x = request.get_json(force=True)
-    x = query_results(flags.dir, x)
+    x = query_stats(flags.dir, x)
     return jsonify(x)
 
 

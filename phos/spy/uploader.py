@@ -27,7 +27,7 @@ class Uploader(Spy):
         # Buffer storing fit results (loss/acc/time) before they are uploaded.
         self.buffer = BatchResultBuffer()
 
-    def on_epoch_begin(self, model):
+    def on_fit_on_epoch_begin(self, trainer):
         """
         Send a model blurb.
         """
@@ -57,7 +57,7 @@ class Uploader(Spy):
         elif self.last_sent_results + self.results_upload_interval <= time():
             self.flush_results()
 
-    def on_train_on_batch_end(self, *args):
+    def on_train_on_batch_end(self, trainer, *args):
         """
         Cache/send the results of one training batch.
         """
@@ -66,7 +66,7 @@ class Uploader(Spy):
         self.buffer.train.add(*args)
         self.maybe_flush_results()
 
-    def on_validate_on_batch_end(self, *args):
+    def on_validate_on_batch_end(self, trainer, *args):
         """
         Cache/send the results of one validation batch.
         """
@@ -75,7 +75,7 @@ class Uploader(Spy):
         self.buffer.val.add(*args)
         self.maybe_flush_results()
 
-    def on_epoch_end(self, epoch, batch):
+    def on_fit_on_epoch_end(self, trainer):
         """
         Force flush the remaining results (in case this is the last epoch).
         """

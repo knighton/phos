@@ -14,30 +14,42 @@ class SpyList(Spy):
             assert isinstance(spy, Spy)
             self.spies.append(spy)
 
-    def apply(self, func):
+    def on_fit_begin(self, trainer):
         for spy in self.spies:
-            func(spy)
+            spy.on_fit_begin(trainer)
 
-    def on_fit_begin(self, *args, **kwargs):
-        self.apply(lambda x: x.on_fit_begin(*args, **kwargs))
+    def on_fit_on_epoch_begin(self, trainer):
+        for spy in self.spies:
+            spy.on_fit_on_epoch_begin(trainer)
 
-    def on_epoch_begin(self, *args, **kwargs):
-        self.apply(lambda x: x.on_epoch_begin(*args, **kwargs))
+    def on_fit_on_batch_begin(self, trainer):
+        for spy in self.spies:
+            spy.on_fit_on_batch_begin(trainer)
 
-    def on_train_on_batch_begin(self, *args, **kwargs):
-        self.apply(lambda x: x.on_train_on_batch_begin(*args, **kwargs))
+    def on_train_on_batch_begin(self, trainer):
+        for spy in self.spies:
+            spy.on_train_on_batch_begin(trainer)
 
-    def on_train_on_batch_end(self, *args, **kwargs):
-        self.apply(lambda x: x.on_train_on_batch_end(*args, **kwargs))
+    def on_train_on_batch_end(self, trainer, *args):
+        for spy in self.spies:
+            spy.on_train_on_batch_end(trainer, *args)
 
-    def on_validate_on_batch_begin(self, *args, **kwargs):
-        self.apply(lambda x: x.on_validate_on_batch_begin(*args, **kwargs))
+    def on_validate_on_batch_begin(self, trainer):
+        for spy in self.spies:
+            spy.on_validate_on_batch_begin(trainer)
 
-    def on_validate_on_batch_end(self, *args, **kwargs):
-        self.apply(lambda x: x.on_validate_on_batch_end(*args, **kwargs))
+    def on_validate_on_batch_end(self, trainer, *args):
+        for spy in self.spies:
+            spy.on_validate_on_batch_end(trainer, *args)
 
-    def on_epoch_end(self, *args, **kwargs):
-        self.apply(lambda x: x.on_epoch_end(*args, **kwargs))
+    def on_fit_on_batch_end(self, trainer):
+        for spy in self.spies:
+            spy.on_fit_on_batch_end(trainer)
 
-    def on_fit_end(self, *args, **kwargs):
-        self.apply(lambda x: x.on_fit_end(*args, **kwargs))
+    def on_fit_on_epoch_end(self, trainer):
+        for spy in self.spies:
+            spy.on_fit_on_epoch_end(trainer)
+
+    def on_fit_end(self, trainer):
+        for spy in self.spies:
+            spy.on_fit_end(trainer)

@@ -10,10 +10,13 @@ _ATTRIBUTES = 'loss', 'accuracy', 'forward', 'backward'
 
 
 _STATIC_QUERY_OPTIONS = {
-    'resolution': _RESOLUTIONS,
     'split': _SPLITS,
     'attribute': _ATTRIBUTES,
 }
+
+
+def get_static_query_options():
+    return _STATIC_QUERY_OPTIONS
 
 
 def get_settings(bench_dir):
@@ -31,11 +34,7 @@ def get_done_models(bench_dir):
     return models
 
 
-def get_static_query_options():
-    return _STATIC_QUERY_OPTIONS
-
-
-def get(k2v, k, vv):
+def get_query_param(k2v, k, vv):
     x = k2v.get(k)
     if x is None:
         return vv
@@ -48,35 +47,32 @@ def get(k2v, k, vv):
         return [x]
 
 
-def product(models, resolutions, splits, attributes):
-    for model, resolution, split, attribute in itertools.product(
-            models, resolutions, splits, attributes):
-        if split == 'val' and attribute == 'backward':
-            continue
-        yield model, resolution, split, attribute
+def each_query_result(models, splits, attributes):
+    for model in models:
+        for split in splits:
+            for attribute in attributes:
+                if split == 'val' and attribute == 'backward':
+                    continue
+                yield model, split, attribute
 
 
-def query_results(bench_dir, x):
+def query_stats(bench_dir, x):
     models_done = get_done_models(bench_dir)
-    models = get(x, 'model', models_done)
+    models = get_query_param(x, 'model', models_done)
     models = sorted(filter(lambda s: s in models_done, models))
 
-    resolutions = get(x, 'resolution', _RESOLUTIONS)
-    splits = get(x, 'split', _SPLITS)
-    attributes = get(x, 'attribute', _ATTRIBUTES)
+    splits = get_query_param(x, 'split', _SPLITS)
+    attributes = get_query_param(x, 'attribute', _ATTRIBUTES)
 
     pairs = []
-    for model, resolution, split, attribute in product(models, resolutions, splits,
-                                                       attributes):
+    for model, split, attribute in each_query_result(models, splits, attributes):
         k = {
             'model': model,
-            'resolution': resolution,
             'split': split,
             'attribute': attribute,
         }
 
-        f = '%s/model/%s/result/%d/%s_%s.npy' % \
-            (bench_dir, model, resolution, split, attribute)
+        f = '%s/model/%s/stat/epoch_%s_%s.npy' % (bench_dir, model, split, attribute)
         x = np.fromfile(f, np.float32)
         v = x.tolist()
 

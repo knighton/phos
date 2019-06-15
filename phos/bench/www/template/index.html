@@ -69,7 +69,6 @@ $.post('/api/query_results', JSON.stringify(query), function(r) {
         var split = r[i][0]['split'];
 
         var model = r[i][0]['model'];
-        console.log(model);
         if (model in model2color) {
             var color = model2color[model];
         } else {
@@ -87,7 +86,7 @@ $.post('/api/query_results', JSON.stringify(query), function(r) {
             values.push(point);
         }
 
-        var key = model + ' (' + split + ')';
+        var key = split + ' | ' + model;
 
         var datum = {
             values: values,
@@ -115,7 +114,7 @@ $.post('/api/query_results', JSON.stringify(query), function(r) {
         ;
 
         chart.xAxis
-            .axisLabel('Batches x 1000')
+            .axisLabel('Epoch')
             .tickFormat(d3.format(',d'))
         ;
 

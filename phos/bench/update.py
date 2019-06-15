@@ -9,8 +9,8 @@ from torch.utils.data import DataLoader
 
 from ..dataset import load_dataset
 from ..model import each_model_name, get_model
-from ..spy import RowPerEpoch, SaveDir
-from ..train import fit
+from ..spy import Checkpoint, LogRowPerEpoch, SaveModelDir
+from ..train import Trainer
 from ..util.flag_parsing import parse_class_and_kwargs
 
 
@@ -24,9 +24,6 @@ def add_model_to_benchmark(bench_dir, settings, model_name):
     f = '%s/model/%s/done.txt' % (bench_dir, model_name)
     if os.path.exists(f):
         return
-    d = '%s/model/%s/' % (bench_dir, model_name)
-    if os.path.exists(d):
-        rmtree(d)
 
     x = settings
 
@@ -55,18 +52,17 @@ def add_model_to_benchmark(bench_dir, settings, model_name):
     optimizer_class, optimizer_kwargs = parse_class_and_kwargs(optim, x['optimizer'])
     optimizer = optimizer_class(model.parameters(), **optimizer_kwargs)
 
-    row_per_epoch = RowPerEpoch()
     model_dir = '%s/model/%s/' % (bench_dir, model_name)
-    save_dir = SaveDir(model_dir, x['blurb_percentiles'])
-    spies = row_per_epoch, save_dir
+    checkpoint_file = '%s/checkpoint.chk' % model_dir
+    checkpoint = Checkpoint(checkpoint_file)
+    log_row_per_epoch = LogRowPerEpoch()
+    save_model_dir = SaveModelDir(model_dir, x['blurb_percentiles'])
+    spies = checkpoint, log_row_per_epoch, save_model_dir
 
-    fit(train_loader, val_loader, model, optimizer, x['num_epochs'],
-        x['train_batches_per_epoch'], x['val_batches_per_epoch'], x['use_cuda'],
-        spies)
-
-    f = '%s/model/%s/done.txt' % (bench_dir, model_name)
-    with open(f, 'w') as out:
-        out.write('')
+    trainer = Trainer(train_loader, val_loader, model, optimizer, x['num_epochs'],
+                      x['train_batches_per_epoch'], x['val_batches_per_epoch'],
+                      x['use_cuda'], spies)
+    trainer.fit()
 
     
 def update_benchmark(bench_dir):

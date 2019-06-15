@@ -5,7 +5,7 @@ from .util.batch_result_buffer import BatchResultBuffer
 mean = lambda xx: sum(xx) / len(xx)
 
 
-class RowPerEpoch(Spy):
+class LogRowPerEpoch(Spy):
     """
     Writes a results row after each epoch, forming a happy little ASCII table.
 
@@ -21,25 +21,25 @@ class RowPerEpoch(Spy):
             filename = '/dev/stdout'
         self.filename = filename
 
-    def on_epoch_begin(self, epoch, model):
+    def on_fit_on_epoch_begin(self, trainer):
         """
         Handle epoch begin.
         """
         self.buffer = BatchResultBuffer()
 
-    def on_train_on_batch_end(self, epoch, batch, *args):
+    def on_train_on_batch_end(self, trainer, *args):
         """
         Handle the results of one training batch.
         """
         self.buffer.train.add(*args)
 
-    def on_validate_on_batch_end(self, epoch, batch, *args):
+    def on_validate_on_batch_end(self, trainer, *args):
         """
         Handle the results of one validation batch.
         """
         self.buffer.val.add(*args)
 
-    def on_epoch_end(self, epoch, model):
+    def on_fit_on_epoch_end(self, trainer):
         """
         Handle epoch end.
         """
@@ -62,7 +62,7 @@ class RowPerEpoch(Spy):
         d_loss = t_loss - v_loss
         d_acc = t_acc - v_acc
 
-        epoch_part = '%6d' % epoch
+        epoch_part = '%6d' % trainer.epoch
         loss_part = '%6.2f %6.2f : %6.2f' % (t_loss, v_loss, d_loss)
         acc_part = '%6.2f%% %6.2f%% : %6.2f%%' % (t_acc, v_acc, d_acc)
         time_part = '%4d %4d : %4d' % (t_fwd, t_bwd, v_fwd)

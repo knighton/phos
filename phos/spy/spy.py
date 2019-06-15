@@ -3,51 +3,32 @@ class Spy(object):
     Callbacks doing arbitrary things surrounding model training.
     """
 
-    def on_fit_begin(self):
-        """
-        Handle fit begin.
-        """
+    def on_fit_begin(self, trainer):
         pass
 
-    def on_epoch_begin(self, epoch, model):
-        """
-        Handle epoch begin.
-        """
+    def on_fit_on_epoch_begin(self, trainer):
         pass
 
-    def on_train_on_batch_begin(self, epoch, batch):
-        """
-        Handle train on batch begin.
-        """
+    def on_fit_on_batch_begin(self, trainer):
         pass
 
-    def on_train_on_batch_end(self, epoch, batch, loss, accuracy, forward, backward):
-        """
-        Handle the results of one training batch.
-        """
+    def on_train_on_batch_begin(self, trainer):
         pass
 
-    def on_validate_on_batch_begin(self, epoch, batch):
-        """
-        Handle validate on batch begin.
-        """
+    def on_train_on_batch_end(self, trainer, *args):
         pass
 
-    def on_validate_on_batch_end(self, epoch, batch, loss, accuracy, forward,
-                                 backward):
-        """
-        Handle the results of one validation batch.
-        """
+    def on_validate_on_batch_begin(self, trainer):
         pass
 
-    def on_epoch_end(self, epoch, model):
-        """
-        Handle epoch end.
-        """
+    def on_validate_on_batch_end(self, trainer, *args):
         pass
 
-    def on_fit_end(self):
-        """
-        Handle fit end.
-        """
+    def on_fit_on_batch_end(self, trainer):
+        pass
+
+    def on_fit_on_epoch_end(self, trainer):
+        pass
+
+    def on_fit_end(self, trainer):
         pass

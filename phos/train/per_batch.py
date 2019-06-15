@@ -11,7 +11,7 @@ def compute_accuracy(y_pred, y_true):
     return (y_pred_classes == y_true).type(torch.float32).mean().item()
 
 
-def train_on_batch(model, x, y_true, optimizer, results=None):
+def train_on_batch(model, x, y_true, optimizer):
     """
     Train on a single batch, returning loss/acc/time.
     """

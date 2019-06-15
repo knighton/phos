@@ -10,7 +10,7 @@ TODO: scrsht
 
 * Different module API to fix edge case in PyTorch nn.Module; wrappers (phos.nn for torch.nn).
 
-## Benchmark
+## Benchmarks
 
 ### New
 
@@ -40,7 +40,7 @@ TODO: scrsht
   python3 -m phos.bench.view --dir data/benchmark/example/ --port 1337
   ```
 
-## Module
+## Modules
 
 * Skip/choice connections are common (framework was built to see into this).
 

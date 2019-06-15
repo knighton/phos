@@ -30,17 +30,15 @@ Filesystem
 
 `blurb/` stores model blurbs dumped at the begining of each epoch.
 
-Resolution (batches per statistic)
-* **1** Each batch (usually impractical).
-* **10** Groups of batches (high resolution).
-* **100** Mini-epochs (low resolution).
-
-Split
-* **train** Training split.
-* **val** Validation split.
-
-Attribute
-* **loss** Cross-entropy.
-* **accuracy** Classification accuracy.
-* **forward** Forward time.
-* **backward** Backward time.
+* **Resolution** Batches per saved statistic (takes the mean).
+    * **1** Each batch (usually impractical).
+    * **10** Groups of batches (high resolution).
+    * **100** Mini-epochs (low resolution).
+* **Split** Dataset split.
+    * **train** Training split.
+    * **val** Validation split.
+* **Attribute** Collected statistic type.
+    * **loss** Cross-entropy.
+    * **accuracy** Classification accuracy.
+    * **forward** Forward time.
+    * **backward** Backward time.

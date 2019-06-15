@@ -22,7 +22,7 @@ TODO: scrsht
 
 ### Update benchmark
 
-* Add new layers you invent to `phos.nx`, subclassing `phos.nx.base.layer.Layer`.
+* Add new layers you invent to `phos.nx`, subclassing `phos.nx.module.Module`.
 
 * Add new models demoing such layers to `phos.model`, calling `register_model` with your block(s) to plug into the standard model frame for comparison ([example](https://github.com/knighton/phos/blob/master/phos/model/baseline.py)).
 

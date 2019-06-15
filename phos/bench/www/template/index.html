@@ -49,21 +49,11 @@ var capitalized = function(s) {
 };
 
 var get_random_color = function() {
-    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
-};
-
-var means = function(xx, unit) {
-    var yy = [];
-    var num_units = xx.length / unit;
-    for (var i = 0; i < num_units; ++i) {
-        var y = 0;
-        for (var j = 0; j < unit; ++j) {
-            var index = i * unit + j;
-            y += xx[index];
-        }
-        yy.push(y / unit);
-    }
-    return yy;
+    var r = Math.random() * 256;
+    var g = Math.random() * 256;
+    var b = Math.random() * 256;
+    var a = 0.5;
+    return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
 };
 
 var query = {
@@ -89,7 +79,6 @@ $.post('/api/query_results', JSON.stringify(query), function(r) {
 
         var values = [];
         var yy = r[i][1];
-        yy = means(yy, 10);
         for (var x = 0; x < yy.length; ++x) {
             var point = {
                 x: x,

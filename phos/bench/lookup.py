@@ -101,4 +101,6 @@ def query_stats(bench_dir, x):
 
 def get_summary(bench_dir, model, epoch):
     f = '%s/model/%s/summary/%d.json' % (bench_dir, model, epoch)
+    if not os.path.exists(f):
+        return None
     return json.load(open(f))

@@ -48,6 +48,14 @@ def serve_api_query_results():
     return jsonify(x)
 
 
+@app.route('/api/get_summary', methods=['POST'])
+    x = request.get_json(force=True)
+    model = x['model']
+    epoch = x['epoch']
+    x = get_summary(flags.dir, model, epoch)
+    return jsonify(x)
+
+
 @app.route('/inc/<basename>')
 def serve_inc(basename):
     assert '..' not in basename
